@@ -237,9 +237,9 @@ if __name__ == "__main__":
                 if (terminations.any() or truncations.any()) and "episode" in infos:
                     for i in np.argwhere(infos["_episode"]):
                         print(f"global_step={global_step}, episodic_return={infos['episode']['r'][i]}")
-                        writer.add_scalar("charts/episodic_return", infos["episode"]["r"][i], global_step)
-                        writer.add_scalar("charts/episodic_length", infos["episode"]["l"][i], global_step)
-                        writer.add_scalar("charts/episodic_time",   infos["episode"]["t"][i], global_step)
+                        writer.add_scalar("train/episodic_return", infos["episode"]["r"][i], global_step)
+                        writer.add_scalar("train/episodic_length", infos["episode"]["l"][i], global_step)
+                        writer.add_scalar("train/episodic_time",   infos["episode"]["t"][i], global_step)
 
             # bootstrap value if not done
             with torch.no_grad():
@@ -342,7 +342,7 @@ if __name__ == "__main__":
             print(f"model saved to {model_path}")
         
     model_path = args.eval_checkpoint if args.eval_checkpoint else model_path
-    episodic_returns = evaluate(
+    episodic_events = evaluate(
         model_path,
         make_env,
         args.env_id,
@@ -351,12 +351,15 @@ if __name__ == "__main__":
         Model=Agent,
         device=device,
     )
-    writer.add_scalar("eval/episodic_return_mean", np.average(episodic_returns),0)
-    writer.add_scalar("eval/episodic_return_min", np.min(episodic_returns),0)
-    writer.add_scalar("eval/episodic_return_max", np.max(episodic_returns),0)
-    writer.add_scalar("eval/episodic_return_std", np.std(episodic_returns),0)
-    for idx, episodic_return in enumerate(episodic_returns):
-        writer.add_scalar("eval/episodic_return", episodic_return, idx)
 
-    envs.close()
+    for idx, event in enumerate(episodic_events):
+        writer.add_scalar("eval/episodic_return", event['return'], idx)
+        writer.add_scalar("eval/episodic_length", event['length'], idx)
+        writer.add_scalar("eval/episodic_time", event['time'], idx)
+    
     writer.close()
+    try:
+        envs.close()
+    except:
+        # somehow this code throws an "AttributeError: 'RecordVideo' object has no attribute 'enabled'" when running the evaluation code
+        pass
