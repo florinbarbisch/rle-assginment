@@ -85,9 +85,6 @@ sympy==1.13.1
 tensorboard==2.18.0
 tensorboard-data-server==0.7.2
 tensorboardX==2.6.2.2
-torch==2.6.0.dev20241220+cu126
-torchaudio==2.6.0.dev20241220+cu126
-torchvision==0.22.0.dev20241220+cu126
 torchviz==0.0.3
 tornado==6.4.2
 tqdm==4.67.1
