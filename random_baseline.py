@@ -28,8 +28,6 @@ class Args:
     """the name of this experiment"""
     seed: int = 1
     """seed of the experiment"""
-    cuda: bool = True
-    """if toggled, cuda will be enabled by default"""
     track: bool = False
     """if toggled, this experiment will be tracked with Weights and Biases"""
     wandb_project_name: str = "cleanRL"
