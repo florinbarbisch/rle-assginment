@@ -6,4 +6,4 @@
 #SBATCH --output=out/ppo-clean-rl-%A_%a.out
 #SBATCH --error=out/ppo-clean-rl-%A_%a.err
 
-.venv/bin/python ppo_clean_rl.py --track
+.venv/bin/python ppo_clean_rl.py --track --exp_name initial_run
