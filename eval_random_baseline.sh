@@ -5,5 +5,4 @@
 #SBATCH --partition=performance # do not change
 #SBATCH --output=out/random-baseline-%A_%a.out
 
-.venv/bin/activate
-python random_baseline.py
+.venv/bin/python random_baseline.py

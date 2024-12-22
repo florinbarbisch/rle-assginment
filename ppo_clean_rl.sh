@@ -5,5 +5,4 @@
 #SBATCH --partition=performance # do not change
 #SBATCH --output=out/ppo-clean-rl-%A_%a.out
 
-.venv/bin/activate
-python ppo_clean_rl.py --track
+.venv/bin/python ppo_clean_rl.py --track
