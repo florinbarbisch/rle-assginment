@@ -4,5 +4,6 @@
 #SBATCH --gres=gpu:0  # never more than 0
 #SBATCH --partition=performance # do not change
 #SBATCH --output=out/ppo-clean-rl-%A_%a.out
+#SBATCH --error=out/ppo-clean-rl-%A_%a.err
 
 .venv/bin/python ppo_clean_rl.py --track
