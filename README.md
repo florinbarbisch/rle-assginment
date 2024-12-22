@@ -111,3 +111,11 @@ Job Status:
 ``` squeue -u <username> ```
 Job Output:
 ``` cat out/rle-mini-challenge-<job_id>.out ```
+
+
+## Copy run files to local machine
+
+```bash
+scp -r f.barbisch@slurmlogin.cs.technik.fhnw.ch:~/rle-assginment/runs ./slurm/runs
+scp -r f.barbisch@slurmlogin.cs.technik.fhnw.ch:~/rle-assginment/out ./slurm/out
+```
