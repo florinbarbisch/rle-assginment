@@ -28,6 +28,18 @@
                 // "--learning_starts", "1",
                 // "--train_frequency", "1",
             ] 
+        },
+        {
+            "name": "Debug: PPO Clean RL",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "ppo_clean_rl.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--track",
+                "--total-timesteps", "1_000_000",
+                // "--eval_checkpoint", "runs/ALE/SpaceInvaders-v5__ppo_clean_rl__1__20241221_225745/ppo_clean_rl.cleanrl_model",
+            ] 
         }
     ]
 }
