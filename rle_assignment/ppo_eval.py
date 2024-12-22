@@ -23,13 +23,11 @@ def evaluate(
     episodic_returns = []
     while len(episodic_returns) < eval_episodes:
         actions, _, _, _ = agent.get_action_and_value(torch.Tensor(obs).to(device))
-        next_obs, _, _, _, infos = envs.step(actions.cpu().numpy())
-        if "final_info" in infos:
-            for info in infos["final_info"]:
-                if "episode" not in info:
-                    continue
-                print(f"eval_episode={len(episodic_returns)}, episodic_return={info['episode']['r']}")
-                episodic_returns += [info["episode"]["r"]]
+        ret = envs.step(actions.cpu().numpy())
+        next_obs, rewards, terminated , truncated, infos = ret
+        if (terminated or truncated) and "episode" in infos:
+            print(f"eval_episode={len(episodic_returns)}, episodic_return={infos['episode']['r']}, episodic_length={infos['episode']['l']}, episodic_time={infos['episode']['t']}")
+            episodic_returns += [infos['episode']['r']]
         obs = next_obs
 
     return episodic_returns
