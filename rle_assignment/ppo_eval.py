@@ -28,6 +28,8 @@ def evaluate(
     while len(episodic_events) < eval_episodes:
         actions, _, _, _ = agent.get_action_and_value(torch.Tensor(obs).to(device))
         next_obs, rewards, terminated , truncated, infos = envs.step(actions.cpu().numpy())
+        # terminated is also sent when the space ship gets one hist but the agent still has a live left.
+        # So we check whether "episode" is in infos. But could also check whether "lives" is 0.
         if (terminated or truncated) and "episode" in infos:
             print(f"eval_episode={len(episodic_events)}, episodic_return={infos['episode']['r']}, episodic_length={infos['episode']['l']}, episodic_time={infos['episode']['t']}")
             episodic_events += [{'return': infos['episode']['r'], 'length': infos['episode']['l'], 'time': infos['episode']['t']}]

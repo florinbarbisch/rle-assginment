@@ -234,6 +234,8 @@ if __name__ == "__main__":
                 rewards[step] = torch.tensor(reward).to(device).view(-1)
                 next_obs, next_done = torch.Tensor(next_obs).to(device), torch.Tensor(next_done).to(device)
 
+                # terminated is also sent when the space ship gets one hist but the agent still has a live left.
+                # So we check whether "episode" is in infos. But could also check whether "lives" is 0.
                 if (terminations.any() or truncations.any()) and "episode" in infos:
                     for i in np.argwhere(infos["_episode"]):
                         print(f"global_step={global_step}, episodic_return={infos['episode']['r'][i]}")
