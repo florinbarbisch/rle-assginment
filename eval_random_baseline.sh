@@ -6,4 +6,4 @@
 #SBATCH --output=out/random-baseline-%A_%a.out
 #SBATCH --error=out/random-baseline-%A_%a.err
 
-.venv/bin/python random_baseline.py
+.venv/bin/python random_baseline.py --track
