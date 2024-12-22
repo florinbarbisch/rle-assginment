@@ -78,5 +78,16 @@
                 "--track",
             ] 
         },
+        {
+            "name": "Debug: Frame Skipping 32",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "ppo_clean_rl.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--track",
+                "--skip_frames", "32",
+            ] 
+        },
     ]
 }

@@ -84,6 +84,8 @@ class Args:
     """the maximum norm for the gradient clipping"""
     target_kl: float = None
     """the target KL divergence threshold"""
+    skip_frames: int = 4
+    """number of frames to skip in MaxAndSkipEnv wrapper"""
 
     # to be filled in runtime
     batch_size: int = 0
@@ -103,7 +105,7 @@ def make_env(env_id, idx, capture_video, run_name):
             env = gym.make(env_id)
         env = gym.wrappers.RecordEpisodeStatistics(env)
         env = NoopResetEnv(env, noop_max=30)
-        env = MaxAndSkipEnv(env, skip=4)
+        env = MaxAndSkipEnv(env, skip=args.skip_frames)
         env = EpisodicLifeEnv(env)
         if "FIRE" in env.unwrapped.get_action_meanings():
             env = FireResetEnv(env)
