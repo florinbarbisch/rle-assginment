@@ -57,5 +57,16 @@
             "program": "random_baseline.py",
             "console": "integratedTerminal",
         },
+        {
+            "name": "Debug: PPO Resnet",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "ppo_resnet.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--track",
+                "--pretrained_weights",
+            ] 
+        },
     ]
 }
