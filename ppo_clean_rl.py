@@ -234,12 +234,10 @@ if __name__ == "__main__":
                 rewards[step] = torch.tensor(reward).to(device).view(-1)
                 next_obs, next_done = torch.Tensor(next_obs).to(device), torch.Tensor(next_done).to(device)
 
-                if "final_info" in infos:
-                    for info in infos["final_info"]:
-                        if info and "episode" in info:
-                            print(f"global_step={global_step}, episodic_return={info['episode']['r']}")
-                            writer.add_scalar("charts/episodic_return", info["episode"]["r"], global_step)
-                            writer.add_scalar("charts/episodic_length", info["episode"]["l"], global_step)
+                if (terminations or truncations) and "episode" in infos:
+                    print(f"global_step={global_step}, episodic_return={infos['episode']['r']}")
+                    writer.add_scalar("charts/episodic_return", infos["episode"]["r"], global_step)
+                    writer.add_scalar("charts/episodic_length", infos["episode"]["l"], global_step)
 
             # bootstrap value if not done
             with torch.no_grad():
