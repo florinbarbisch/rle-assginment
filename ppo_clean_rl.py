@@ -357,8 +357,8 @@ if __name__ == "__main__":
         writer.add_scalar("eval/episodic_length", event['length'], idx)
         writer.add_scalar("eval/episodic_time", event['time'], idx)
     
-    writer.close()
     try:
+        writer.close()
         envs.close()
     except:
         # somehow this code throws an "AttributeError: 'RecordVideo' object has no attribute 'enabled'" when running the evaluation code
