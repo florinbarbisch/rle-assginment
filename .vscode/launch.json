@@ -68,5 +68,15 @@
                 "--pretrained_weights",
             ] 
         },
+        {
+            "name": "Debug: IEM PPO",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "iem_ppo.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--track",
+            ] 
+        },
     ]
 }
