@@ -5,6 +5,7 @@ import time
 from dataclasses import dataclass
 
 import gymnasium as gym
+import ale_py
 import numpy as np
 import torch
 import torch.nn as nn
@@ -22,6 +23,8 @@ from stable_baselines3.common.atari_wrappers import (  # isort:skip
     NoopResetEnv,
 )
 
+
+gym.register_envs(ale_py)  # unnecessary but helpful for IDEs
 
 @dataclass
 class Args:
