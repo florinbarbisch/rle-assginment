@@ -129,7 +129,7 @@ def layer_init(layer, std=np.sqrt(2), bias_const=0.0):
 
 
 class Agent(nn.Module):
-    def __init__(self, envs, pretrained_weights):
+    def __init__(self, envs, pretrained_weights = False):
         super().__init__()
         self.pretrained_weights = pretrained_weights
         # Initialize ResNet18 and modify first conv layer to accept 4 channels
