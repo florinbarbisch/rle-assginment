@@ -116,6 +116,6 @@ Job Output:
 ## Copy run files to local machine
 
 ```bash
-scp -r f.barbisch@slurmlogin.cs.technik.fhnw.ch:~/rle-assginment/runs ./slurm
-scp -r f.barbisch@slurmlogin.cs.technik.fhnw.ch:~/rle-assginment/out ./slurm
+scp -r f.barbisch@slurmlogin.cs.technik.fhnw.ch:~/rle-assginment/runs ./slurm/
+scp -r f.barbisch@slurmlogin.cs.technik.fhnw.ch:~/rle-assginment/out ./slurm/
 ```
