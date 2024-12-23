@@ -9,6 +9,7 @@ runs/
 videos/
 wandb/
 out/
+slurm/
 # Distribution / packaging
 .Python
 build/
