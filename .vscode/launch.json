@@ -79,6 +79,17 @@
             ] 
         },
         {
+            "name": "eval SLURM: IEM PPO",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "iem_ppo.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--track",
+                "--eval_checkpoint", "slurm/ALE/SpaceInvaders-v5__iem_ppo__1__20241223_000744/iem_ppo.cleanrl_model",
+            ] 
+        },
+        {
             "name": "Debug: Frame Skipping 32",
             "type": "debugpy",
             "request": "launch",
