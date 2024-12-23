@@ -90,17 +90,6 @@
             ] 
         },
         {
-            "name": "eval SLURM: Resnet pretrained",
-            "type": "debugpy",
-            "request": "launch",
-            "program": "ppo_resnet.py",
-            "console": "integratedTerminal",
-            "args": [
-                "--track",
-                "--eval_checkpoint", "slurm/ALE/SpaceInvaders-v5__ppo_resnet__1__20241223_000809/ppo_resnet.cleanrl_model",
-            ] 
-        },
-        {
             "name": "eval SLURM: Resnet",
             "type": "debugpy",
             "request": "launch",
@@ -108,6 +97,19 @@
             "console": "integratedTerminal",
             "args": [
                 "--track",
+                "--exp_name", "ppo_resnet",
+                "--eval_checkpoint", "slurm/ALE/SpaceInvaders-v5__ppo_resnet__1__20241223_000809/ppo_resnet.cleanrl_model",
+            ] 
+        },
+        {
+            "name": "eval SLURM: Resnet pretrained",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "ppo_resnet.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--track",
+                "--exp_name", "ppo_resnet_pretrained",
                 "--eval_checkpoint", "slurm/ALE/SpaceInvaders-v5__ppo_resnet_pretrained__1__20241223_005316/ppo_resnet_pretrained.cleanrl_model",
             ] 
         },
