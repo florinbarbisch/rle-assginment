@@ -310,7 +310,7 @@ if __name__ == "__main__":
                     next_features = agent.network(next_obs / 255.0)
                     steps_pred = agent.get_uncertainty(current_features, next_features)
                     # Higher step prediction means more uncertainty/novelty
-                    uncertainty = steps_pred.clamp(0, 4)  # Clamp to reasonable range
+                    uncertainty = torch.tanh(steps_pred)
                     uncertainties[step] = uncertainty.flatten()
                     
                     # Add current state features to buffer
