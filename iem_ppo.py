@@ -165,9 +165,9 @@ class Agent(nn.Module):
     def get_uncertainty(self, current_features, next_features):
         """Estimate the uncertainty between current and next state"""
         combined_features = torch.cat([current_features, next_features], dim=1)
-        steps_estimate = self.uncertainty_net(combined_features)
-        # The uncertainty is higher when the estimated steps are higher
-        uncertainty = torch.sigmoid(steps_estimate)  # Normalize to [0,1]
+        difference = self.uncertainty_net(combined_features)
+        # Use feature difference magnitude instead of step prediction
+        uncertainty = torch.sigmoid(difference)
         return uncertainty
 
 
@@ -345,7 +345,13 @@ if __name__ == "__main__":
                         v_loss = 0.5 * ((newvalue - b_returns[mb_inds]) ** 2).mean()
 
                     # Uncertainty network loss
-                    uncertainty_loss = 0.5 * ((agent.get_uncertainty(current_features, current_features) - 1.0) ** 2).mean()
+                    uncertainty_loss = (
+                        # Same state should have low uncertainty
+                        0.5 * ((agent.get_uncertainty(current_features, current_features)) ** 2).mean() +
+                        # Different states should have higher uncertainty based on their feature difference
+                        0.5 * (agent.get_uncertainty(current_features, next_features) - 
+                               torch.norm(current_features - next_features, dim=1, keepdim=True).detach()).mean()
+                    )
 
                     entropy_loss = entropy.mean()
                     loss = pg_loss - args.ent_coef * entropy_loss + v_loss * args.vf_coef + uncertainty_loss
