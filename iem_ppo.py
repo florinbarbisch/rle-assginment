@@ -8,6 +8,7 @@ import ale_py
 import numpy as np
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 import torch.optim as optim
 import tyro
 from torch.distributions.categorical import Categorical
@@ -87,6 +88,10 @@ class Args:
     # IEM specific arguments
     uncertainty_coef: float = 0.1
     """coefficient for the uncertainty reward"""
+    uncertainty_buffer_size: int = 128
+    """size of the replay buffer for uncertainty training"""
+    uncertainty_sample_size: int = 16
+    """number of state pairs to sample for uncertainty training"""
 
     # to be filled in runtime
     batch_size: int = 0
@@ -142,13 +147,14 @@ class Agent(nn.Module):
         self.actor = layer_init(nn.Linear(512, envs.single_action_space.n), std=0.01)
         self.critic = layer_init(nn.Linear(512, 1), std=1)
         
-        # Uncertainty estimation network
+        # Uncertainty estimation network - now predicts number of steps
         self.uncertainty_net = nn.Sequential(
             layer_init(nn.Linear(512 * 2, 256)),  # Takes current and next state features
             nn.ReLU(),
             layer_init(nn.Linear(256, 128)),
             nn.ReLU(),
-            layer_init(nn.Linear(128, 1)),  # Outputs estimated steps needed
+            layer_init(nn.Linear(128, 1)),  # Outputs predicted number of steps
+            nn.ReLU()  # Ensure positive step prediction
         )
 
     def get_value(self, x):
@@ -165,10 +171,56 @@ class Agent(nn.Module):
     def get_uncertainty(self, current_features, next_features):
         """Estimate the uncertainty between current and next state"""
         combined_features = torch.cat([current_features, next_features], dim=1)
-        difference = self.uncertainty_net(combined_features)
-        # Use feature difference magnitude instead of step prediction
-        uncertainty = torch.sigmoid(difference)
-        return uncertainty
+        steps_pred = self.uncertainty_net(combined_features)
+        return steps_pred
+
+
+class StateBuffer:
+    def __init__(self, buffer_size, feature_dim):
+        self.buffer_size = buffer_size
+        self.feature_dim = feature_dim
+        self.buffer = []  # Will store tuples of (state_features, timestamp)
+        self.current_timestamp = 0
+        
+    def add(self, state_features):
+        """Add state features to buffer with timestamp, maintaining max size"""
+        self.buffer.append((state_features.detach(), self.current_timestamp))
+        self.current_timestamp += 1
+        if len(self.buffer) > self.buffer_size:
+            self.buffer.pop(0)
+            
+    def sample_pairs(self, num_pairs):
+        """Sample random pairs of states from buffer, ensuring first state is earlier
+        Returns:
+            state1: Earlier states
+            state2: Later states
+            steps: Number of steps between states
+        """
+        if len(self.buffer) < 2:
+            return None, None, None
+            
+        # Sample two different indices for each pair
+        pairs = []
+        steps = []
+        for _ in range(num_pairs):
+            idx1, idx2 = random.sample(range(len(self.buffer)), 2)
+            state1, t1 = self.buffer[idx1]
+            state2, t2 = self.buffer[idx2]
+            
+            # Ensure state1 is the earlier state
+            if t1 > t2:
+                state1, state2 = state2, state1
+                t1, t2 = t2, t1
+            
+            pairs.append((state1, state2))
+            steps.append(t2 - t1)
+        
+        # Convert to tensors
+        state1 = torch.stack([p[0] for p in pairs])
+        state2 = torch.stack([p[1] for p in pairs])
+        steps = torch.tensor(steps, device=state1.device).view(-1, 1)
+        
+        return state1, state2, steps
 
 
 if __name__ == "__main__":
@@ -222,6 +274,9 @@ if __name__ == "__main__":
         values = torch.zeros((args.num_steps, args.num_envs)).to(device)
         uncertainties = torch.zeros((args.num_steps, args.num_envs)).to(device)
         features = torch.zeros((args.num_steps, args.num_envs, 512)).to(device)  # Store features for uncertainty estimation
+        
+        # Initialize state buffer for each environment
+        state_buffers = [StateBuffer(args.uncertainty_buffer_size, 512) for _ in range(args.num_envs)]
 
         # TRY NOT TO MODIFY: start the game
         global_step = 0
@@ -259,8 +314,15 @@ if __name__ == "__main__":
                 # Calculate uncertainty-based intrinsic reward
                 with torch.no_grad():
                     next_features = agent.network(next_obs / 255.0)
-                    uncertainty = agent.get_uncertainty(current_features, next_features)
+                    steps_pred = agent.get_uncertainty(current_features, next_features)
+                    # Higher step prediction means more uncertainty/novelty
+                    uncertainty = steps_pred.clamp(0, 4)  # Clamp to reasonable range
+                    # print(uncertainty)
                     uncertainties[step] = uncertainty.flatten()
+                    
+                    # Add current state features to buffer
+                    for env_idx in range(args.num_envs):
+                        state_buffers[env_idx].add(current_features[env_idx])
                     
                     # Combine extrinsic and intrinsic rewards
                     combined_reward = reward + args.uncertainty_coef * uncertainty.cpu().numpy().flatten()
@@ -345,13 +407,22 @@ if __name__ == "__main__":
                         v_loss = 0.5 * ((newvalue - b_returns[mb_inds]) ** 2).mean()
 
                     # Uncertainty network loss
-                    uncertainty_loss = (
-                        # Same state should have low uncertainty
-                        0.5 * ((agent.get_uncertainty(current_features, current_features)) ** 2).mean() +
-                        # Different states should have higher uncertainty based on their feature difference
-                        0.5 * (agent.get_uncertainty(current_features, next_features) - 
-                               torch.norm(current_features - next_features, dim=1, keepdim=True).detach()).mean()
-                    )
+                    uncertainty_loss = 0
+                    total_samples = 0
+                    
+                    # Sample from each environment's buffer
+                    for env_idx in range(args.num_envs):
+                        state1, state2, steps = state_buffers[env_idx].sample_pairs(args.uncertainty_sample_size // args.num_envs)
+                        if state1 is not None and state2 is not None:
+                            # Predict number of steps between states
+                            steps_pred = agent.get_uncertainty(state1, state2)
+                            # MSE loss between predicted and actual steps
+                            uncertainty_loss += F.mse_loss(steps_pred, steps.float())
+                            total_samples += 1
+                    
+                    if total_samples > 0:
+                        # divide by number of samples, number of environments, and halve the number of states in buffer (as this is the average steps sampled)
+                        uncertainty_loss = uncertainty_loss / (total_samples * args.num_envs * args.uncertainty_buffer_size // 2)
 
                     entropy_loss = entropy.mean()
                     loss = pg_loss - args.ent_coef * entropy_loss + v_loss * args.vf_coef + uncertainty_loss
