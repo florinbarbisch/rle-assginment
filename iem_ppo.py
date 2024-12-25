@@ -88,10 +88,6 @@ class Args:
     # IEM specific arguments
     uncertainty_coef: float = 0.1
     """coefficient for the uncertainty reward"""
-    uncertainty_buffer_size: int = 128
-    """size of the replay buffer for uncertainty training"""
-    uncertainty_sample_size: int = 16
-    """number of state pairs to sample for uncertainty training"""
 
     # to be filled in runtime
     batch_size: int = 0
@@ -176,8 +172,8 @@ class Agent(nn.Module):
 
 
 class StateBuffer:
-    def __init__(self, buffer_size, feature_dim):
-        self.buffer_size = buffer_size
+    def __init__(self, num_steps, feature_dim):
+        self.num_steps = num_steps
         self.feature_dim = feature_dim
         self.buffer = []  # Will store tuples of (state_features, timestamp)
         self.current_timestamp = 0
@@ -186,11 +182,11 @@ class StateBuffer:
         """Add state features to buffer with timestamp, maintaining max size"""
         self.buffer.append((state_features.detach(), self.current_timestamp))
         self.current_timestamp += 1
-        if len(self.buffer) > self.buffer_size:
+        if len(self.buffer) > self.num_steps:
             self.buffer.pop(0)
             
-    def sample_pairs(self, num_pairs):
-        """Sample random pairs of states from buffer, ensuring first state is earlier
+    def get_all_pairs(self):
+        """Get all unique ordered pairs of states from buffer
         Returns:
             state1: Earlier states
             state2: Later states
@@ -199,21 +195,19 @@ class StateBuffer:
         if len(self.buffer) < 2:
             return None, None, None
             
-        # Sample two different indices for each pair
+        # Generate all unique ordered pairs
         pairs = []
         steps = []
-        for _ in range(num_pairs):
-            idx1, idx2 = random.sample(range(len(self.buffer)), 2)
-            state1, t1 = self.buffer[idx1]
-            state2, t2 = self.buffer[idx2]
-            
-            # Ensure state1 is the earlier state
-            if t1 > t2:
-                state1, state2 = state2, state1
-                t1, t2 = t2, t1
-            
-            pairs.append((state1, state2))
-            steps.append(t2 - t1)
+        n = len(self.buffer)
+        
+        # Only take pairs where first state is equal or earlier than second state
+        for i in range(n):
+            for j in range(i, n):
+                state1, t1 = self.buffer[i]
+                state2, t2 = self.buffer[j]
+                # States are already in chronological order due to buffer structure
+                pairs.append((state1, state2))
+                steps.append(t2 - t1)
         
         # Convert to tensors
         state1 = torch.stack([p[0] for p in pairs])
@@ -276,7 +270,7 @@ if __name__ == "__main__":
         features = torch.zeros((args.num_steps, args.num_envs, 512)).to(device)  # Store features for uncertainty estimation
         
         # Initialize state buffer for each environment
-        state_buffers = [StateBuffer(args.uncertainty_buffer_size, 512) for _ in range(args.num_envs)]
+        state_buffers = [StateBuffer(args.num_steps, 512) for _ in range(args.num_envs)]
 
         # TRY NOT TO MODIFY: start the game
         global_step = 0
@@ -317,7 +311,6 @@ if __name__ == "__main__":
                     steps_pred = agent.get_uncertainty(current_features, next_features)
                     # Higher step prediction means more uncertainty/novelty
                     uncertainty = steps_pred.clamp(0, 4)  # Clamp to reasonable range
-                    # print(uncertainty)
                     uncertainties[step] = uncertainty.flatten()
                     
                     # Add current state features to buffer
@@ -408,22 +401,16 @@ if __name__ == "__main__":
 
                     # Uncertainty network loss
                     uncertainty_loss = 0
-                    total_samples = 0
                     
-                    # Sample from each environment's buffer
+                    # Get all unique pairs from each environment's buffer
                     for env_idx in range(args.num_envs):
-                        state1, state2, steps = state_buffers[env_idx].sample_pairs(args.uncertainty_sample_size // args.num_envs)
-                        if state1 is not None and state2 is not None:
-                            # Predict number of steps between states
-                            steps_pred = agent.get_uncertainty(state1, state2)
-                            # MSE loss between predicted and actual steps
-                            uncertainty_loss += F.mse_loss(steps_pred, steps.float())
-                            total_samples += 1
+                        state1, state2, steps = state_buffers[env_idx].get_all_pairs()
+                        # Predict number of steps between states
+                        steps_pred = agent.get_uncertainty(state1, state2)
+                        # MSE loss between predicted and actual steps
+                        uncertainty_loss += F.mse_loss(steps_pred, steps.float(), reduction='mean')
                     
-                    if total_samples > 0:
-                        # divide by number of samples, number of environments, and halve the number of states in buffer (as this is the average steps sampled)
-                        uncertainty_loss = uncertainty_loss / (total_samples * args.num_envs * args.uncertainty_buffer_size // 2)
-
+                    uncertainty_loss = uncertainty_loss / args.num_envs
                     entropy_loss = entropy.mean()
                     loss = pg_loss - args.ent_coef * entropy_loss + v_loss * args.vf_coef + uncertainty_loss
 
