@@ -6,4 +6,4 @@
 #SBATCH --output=out/iem-ppo-%A_%a.out
 #SBATCH --error=out/iem-ppo-%A_%a.err
 
-.venv/bin/python iem_ppo.py --track --exp_name iem_ppo
+.venv/bin/python iem_ppo.py --track --exp_name "iem_ppo_coef_$1" --uncertainty_coef $1
