@@ -1,9 +1,8 @@
-
 # RLE Mini-Challenge
 
 Ziel dieser Mini-Challenge ist es einen Deep Reinforcemen Learning Agenten zu trainieren, der einen möglichst hohen Score im Atari Spiel "Space Invaders" erreicht.
 
-In diesem Repository findet ihr ein Template, auf dem ihr eure Lösung implementieren könnt, sowie eine Beispiel-Implementation eines einfachen DQN Agenten.
+In diesem Repository ist der Code für meine Implemenierung zu finden. Sowie der [Berich](Bericht.md).
 
 ## Atari Space Invaders Environment
 
@@ -20,102 +19,56 @@ Gym Space Invaders Dokumentation: [https://www.gymlibrary.ml/environments/atari/
 
 ## Installation
 
-**Empfehlung:** Verwenden sie ein separates virtual environment.
-
 Zuerst folgendes pip install:
 ```
-pip install cleanrl gymnasium[atari,accept-rom-license] ale-py pygame tensorboard opencv-python absl-py tensorboardX stable-baselines3 tyro moviepy
+pip install -r requirements.xt
 ```
 
-Ausserdem muss PyTorch installiert werden:
+Ausserdem muss CUDA PyTorch installiert werden:
 
 [https://pytorch.org/get-started](https://pytorch.org/get-started)
 
-## Tensorboard
-Einzelne Experimente können in Tensorboard gelogged werden.
-So können diese visualisiert werden:
+
+## Run Experiments on SLURM
+Evaluate Baseline (Random Agent):
+```bash
+sbatch eval_random_baseline.sh
 ```
-tensorboard --logdir runs
+
+Initial Setup:
+```bash
+sbatch initial_run.sh
 ```
 
-## Training starten:
+Epsilon Hyperparameter Tuning:
+```bash
+sbatch epsilon_tuning.sh
+```
 
-PPO Clean RL
-```python ppo_clean_rl.py```
+Intrinsic Exploration Module (IEM):
+```bash
+sbatch iem_ppo.sh
+```
 
-DQN Clean RL
-```python dqn_clean_rl.py```
+ResNet Agent:
+```bash
+sbatch ppo_resnet.sh
+```
 
-DQN Yanick
-```python dqn_example.py```
+Frame Skipping:
+```bash
+sbatch frame_skipping.sh
+```
 
- ## Evaluation
-
-PPO Clean RL:
- ```python ppo_clean_rl.py --eval-checkpoint "runs/{run_name}/{args.exp_name}.cleanrl_model"```
-
-DQN Clean RL:
-  ```python dqn_clean_rl.py --eval-checkpoint "runs/{run_name}/{args.exp_name}.cleanrl_model"NT```
-
-DQN Yanick
-```python dqn_example.py --eval_checkpoint PATH_TO_CHECKPOINT```
-
-## Inhalt
-
-### run.py
-
-Template für das Implementieren der Lösung.
-
-Es steht euch jedoch offen, ob ihr dieses Template verwendet oder einen eigenen Ansatz verfolgt.
-
-### run.sh
-
-Script um `run.py` auf dem SLURM cluster auszuführen.
-
-### dqn_example.py
-
-Beispiel-Implementation eines einfachen DQN agent. Kann für die mini-challenge verwendet und erweitert werden.
-
-### dqn_clen_rl.py
-
-Beispiel-Implementation DQN von [CleanRL](https://docs.cleanrl.dev/). Kann für die mini-challenge verwendet und erweitert werden.
-
-### ppo_clen_rl.py
-
-Beispiel-Implementation PPO von [CleanRL](https://docs.cleanrl.dev/). Kann für die mini-challenge verwendet und erweitert werden.
-
-
-### rle_assignment/env.py
-
-Beinhaltet die `make_env` Funktion, zum erstellen einer Environment-Instanz.
-
-### rle_assignment/utils.py
-
-Beinhaltet nützliche Funktionen und Klassen.
-
-## SLURM Cluster
-Zugriff erhalten:
-
-Public key an Yanick senden, damit er euch einen Account erstellt.
-
-### Daten auf den Cluster kopieren
-
-``` scp -r <local_path> <username>@slurmlogin.cs.technik.fhnw.ch:~/<remote_path> ```
-
-### SLURM Befehle
-Job starten:
-``` sbatch run.sh ```
-Job stoppen:
-``` scancel <job_id> ```
-Job Status:
-``` squeue -u <username> ```
-Job Output:
-``` cat out/rle-mini-challenge-<job_id>.out ```
-
-
-## Copy run files to local machine
+## Copy SLURM Run Files to Local Machine
 
 ```bash
 scp -r f.barbisch@slurmlogin.cs.technik.fhnw.ch:~/rle-assginment/runs ./slurm/
 scp -r f.barbisch@slurmlogin.cs.technik.fhnw.ch:~/rle-assginment/out ./slurm/
+```
+
+## Inspect Logs wih Tensorboard
+
+```bash
+tensorboard --logdir slurm/runs/ALE/ 
 ```
