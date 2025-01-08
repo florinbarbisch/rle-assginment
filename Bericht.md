@@ -65,7 +65,7 @@ Die folgende Grafik zeigt die Verteilung der Returns von 100 Episoden in der Eva
 Wie auf ddem Plot zu sehen ist, ist der Median der Runs des initialen Ansatzes deutlich über dem 90% Percentil des Baseline (Random Agent). Es ist also klar zu sehen, dass der Agent mit PPO gelernt hat.
 
 
-![](assets/Pasted image 20241230160944.png]
+![alt tex](assets/Pasted image 20241230160944.png]
 Auch bei den Anzahl Schritten pro Episode liegt der Median der Runs des initialen Ansatzes deutlich über dem 90% Percentil des Baseline-Ansatzes. Dies scheint logisch zu sein, da mehr Reward durch das Abschiessen von mehr Aliens erreicht wird und dies mehr Zeit beansprucht.
 
 ![](assets/Pasted image 20241230160956.png]
