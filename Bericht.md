@@ -2,7 +2,7 @@
 ## Baseline
 Als Baseline habe ich einen Random Agent genommen. Dieser sampled seine Actions uniform vom Action-Space. Das heisst, er lernt nichts und reagiert auch nicht auf das Environment oder dessen Observation.
 Ich erwarte keinen grossen Reward, da die Actions zufällig gewählt werden. Allerdings erwarte ich auch nicht einen Reeward von 0, da man mit zufälligen Drücken von Tasten immernoch das ein oder andere Alien abschiessen kann. Vielmehr soll der Random Agent eine Grundlage geben, was man durch zufälliges Drücken von Tasten eerreichne kann um in den nächsten Experimenten einen Verlgeich zu haben.
-![](./assets/Pasted image 20241222150011.png]
+![plot](assets/Pasted_image_20241222150011.png]
 Der Random Agent hat einen durchschnittlichen Return von 136.8 erreicht, wobei es einige Ausreisser nach oben gibt wie in der Abbbildung gut zu sehen ist.. Das erklärt auch der ein bisschen tiefere Median. 
 
 Beim Ansehen der Videos wird gut ersichttlich, dass es sich hier um zufällige Actioons handelt. Das Spaceship bewegt sich schnell hin und her und legt keine längeren Strecken an einem St¨ück in eine bestimmte Richtung zurück.
