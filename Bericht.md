@@ -39,6 +39,8 @@ Hier sind Hyperparameter beschreiben, welche relevant für das Experiment sind. 
 | vf_coef         | 0.5                  | Actor-Critic: Balanciert die Bedeutung des Loss der Value-Function im Vergleich zum Policy-Loss.                                                                                                                                                                    |
 | max_grad_norm   | 0.5                  | Maximal erlaubter Normwert des Gradienten beim Clipping.                                                                                                                                                                                                            |
 | target_kl       | None                 | Beschränkung der KL-Divergenz zwischen den Updates, da die Beschränkung nicht ausreicht, um grosse Updates zu verhindern.                                                                                                                                           |
+
+
 ### Wrappers
 Wrappers haben auch einen wesentlichen Einfluss auf das Experiment. Sie bestimmen vorallem Eigenschaften des Environments, respektive wie das Environment einen Einfluss auf den Agenten hat (ResizeObservation). 
 
@@ -49,6 +51,8 @@ Wrappers haben auch einen wesentlichen Einfluss auf das Experiment. Sie bestimme
 | ResizeObservation(env, (84, 84)) | Resized das Bild (die Observation) auf 84x84 Pixel. Dabei geht ein wenig Information verloren aber das Modell muss weniger Parameter haben/Berechnungen ausführen. |
 | GrayscaleObservation(env)        | Macht das Bild Schwarz-Weiss (mit Graustufen).                                                                                                                     |
 | FrameStackObservation(env, 4)    | Stacked die letzten 4 Frames zu einem.                                                                                                                             |
+
+
 *Wie verhählt sich die Kombination von `MaxAndSkipEnv` und `FrameStackObservation`?* => Durch `MaxAndSkipEnv` und `FrameStackObservation` führt nur jedes 16te Frame zu eine Action vom Agent.
 ### Agent
 Das verwendete Modell sieht wie folgt aus. Es besteht aus einem Encoder mit 3 Conv2D Layer und einem linearen Layer. Der Encoder erhält als Input 4 Grayscale Bilder mit einer Grösse von 84x84. Die 4 Bilder sind gestacked sodass es zu einem Bild mit 4 Channels wird. Der Encoder bläst die Channels im ersten Conv2D Layer durch einen 8x8 Kernel mit einer Stride von 4 auf 32 Channels auf. Dann mit einem 4x4 Kernel und einem Stride von 2 auf 64 Channels. Anschliessend folgt ein letzter Conv2D Layer mit einem 3x3 Layer und einem Stride von 1 aber die Anzahl Channels bleiben gleich. Dazwischen befindet sich jeweils eine ReLu-Aktivierungsfunktion. Das resultierende Bild mit einer Grösse von 7x7 Pixel und 64 Channels wird direkt in einen neuronalen Layer gefüttert und auf 512 Outputneuronen reduziert.
@@ -151,6 +155,8 @@ Interessant: Skip-Frames 16 ist fast so schnell wie Baseline bei der Evaluation.
 | Skip Frame 8  | 50       |
 | Skip Frame 16 | 1h 34min |
 | Skip Frame 32 | 3h 12min |
+
+
 Im Training lassen sich ein bisschen andere Erkenntnisse feststellen bezüglich der Trainingsdauer. Der Initiale-Ansatz und das Hyperparameter-Tuning brauchen gleiche lange, da sie die gleichen Operation gleich häufig ausführen. Nur eine Koeffiziente verändert sich. IEM-PPO braucht wesentlich länger, da es ein weiteres Netzwerk aktualisieren und für den Reward jeweils auch auswerten muss. ResNe braucht auch länger als der initiale Ansatz, da die Berechnungen der Action durch den Agent durch das wesentlich grössere Netzwerk komplizierzter werden und dem entsprechend mehr Rechenleistung/Zeit brauchen.
 
 Völlig anderst sieht es bei den Skip-Frame-Konfigurationen aus. Hier werden unterschiedlich viele Frames pro Zeitschritt simuliert. Alle Konfigurationen haben aber genau gleich viel Zeitschritte. Somit wächst hier die Trainingsdauer mit den Anzahl skipped Frames.  
