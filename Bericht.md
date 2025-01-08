@@ -17,6 +17,10 @@ PPO habe ich aus mehreren Gründen ausgewählt:
 	1. PPO ist einfach zu berechnen. Gerade verglichen mit TRPO, was PPO ja versucht zu approximieren.
 	2. PPO ist stabil weil es nicht viel Hyperparameter-Tuning braucht.
 	3. PPO ist Sample-Efficienct und lerrnt daher schneller. Dies ist generall der Fall bei On-Policy Methoden. Algorithmen wie DQN (welche Off-Policy sind) sind viel weniger Sample-Efficient.
+
+
+![plot](assets/Pasted_image_20241222150011.png)
+
 ### Hyperparameter
 Hier sind Hyperparameter beschreiben, welche relevant für das Experiment sind. Parameter wie `wandb` werden nicht beschrieben, da sie keinen Einfluss auf das Experiment haben sondern in diesem Fall jetzt für das Loggen der Werte verwendet wurden.
 
@@ -53,6 +57,9 @@ Wrappers haben auch einen wesentlichen Einfluss auf das Experiment. Sie bestimme
 | FrameStackObservation(env, 4)    | Stacked die letzten 4 Frames zu einem.                                                                                                                             |
 
 
+
+![plot](assets/Pasted_image_20241222150011.png)
+
 *Wie verhählt sich die Kombination von `MaxAndSkipEnv` und `FrameStackObservation`?* => Durch `MaxAndSkipEnv` und `FrameStackObservation` führt nur jedes 16te Frame zu eine Action vom Agent.
 ### Agent
 Das verwendete Modell sieht wie folgt aus. Es besteht aus einem Encoder mit 3 Conv2D Layer und einem linearen Layer. Der Encoder erhält als Input 4 Grayscale Bilder mit einer Grösse von 84x84. Die 4 Bilder sind gestacked sodass es zu einem Bild mit 4 Channels wird. Der Encoder bläst die Channels im ersten Conv2D Layer durch einen 8x8 Kernel mit einer Stride von 4 auf 32 Channels auf. Dann mit einem 4x4 Kernel und einem Stride von 2 auf 64 Channels. Anschliessend folgt ein letzter Conv2D Layer mit einem 3x3 Layer und einem Stride von 1 aber die Anzahl Channels bleiben gleich. Dazwischen befindet sich jeweils eine ReLu-Aktivierungsfunktion. Das resultierende Bild mit einer Grösse von 7x7 Pixel und 64 Channels wird direkt in einen neuronalen Layer gefüttert und auf 512 Outputneuronen reduziert.
@@ -61,11 +68,11 @@ Der Actor und Critic haben jeweils einen separaten Head bestehend aus einem line
 Dieses Modell wird für jeden Agent verwendet, ausser im Baseline-Setup und im ResNet18-Setup.
 ### Vergleich mit Baseline
 Die folgende Grafik zeigt die Verteilung der Returns von 100 Episoden in der Evaluationen dar (y-Achse). Zusehen ist hier ein Violinplot mit zwei Verteilungen. Eine des Baseline Ansatzes mit einem Random Agent und eine für den initialen Ansatz (PPO). In Rot ist jeweils der Median eingezeichnet und in Blau das 10te und 90ste Percentil. Alle ähnlichen Grafik sind gleich aufgebaut. Sie unterscheiden sich lediglich darin, welche Konfiguration(en) abgebildet ist/sind auf der x-Achse und ob die Verteilung der Returns der Episoden oder die Verteilungen der Dauer pro Epsiode oder Länge pro Episode dargestellt wird.
-![plot](/assets/Pasted image 20241230161019.png)
+![plot](assets/Pasted image 20241230161019.png)
 Wie auf ddem Plot zu sehen ist, ist der Median der Runs des initialen Ansatzes deutlich über dem 90% Percentil des Baseline (Random Agent). Es ist also klar zu sehen, dass der Agent mit PPO gelernt hat.
 
 
-![alt tex](assets/Pasted image 20241230160944.png)
+![plot](assets/Pasted image 20241230160944.png)
 Auch bei den Anzahl Schritten pro Episode liegt der Median der Runs des initialen Ansatzes deutlich über dem 90% Percentil des Baseline-Ansatzes. Dies scheint logisch zu sein, da mehr Reward durch das Abschiessen von mehr Aliens erreicht wird und dies mehr Zeit beansprucht.
 
 ![](assets/Pasted image 20241230160956.png)
