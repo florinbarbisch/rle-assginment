@@ -2,7 +2,7 @@
 
 Ziel dieser Mini-Challenge ist es einen Deep Reinforcemen Learning Agenten zu trainieren, der einen möglichst hohen Score im Atari Spiel "Space Invaders" erreicht.
 
-In diesem Repository ist der Code für meine Implemenierung zu finden. Sowie der [Berich](Bericht.md).
+In diesem Repository ist der Code für meine Implemenierung zu finden. Sowie den [Bericht](Bericht.md).
 
 ## Atari Space Invaders Environment
 
