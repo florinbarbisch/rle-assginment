@@ -2,7 +2,7 @@
 ## Baseline
 Als Baseline habe ich einen Random Agent genommen. Dieser sampled seine Actions uniform vom Action-Space. Das heisst, er lernt nichts und reagiert auch nicht auf das Environment oder dessen Observation.
 Ich erwarte keinen grossen Reward, da die Actions zufällig gewählt werden. Allerdings erwarte ich auch nicht einen Reeward von 0, da man mit zufälligen Drücken von Tasten immernoch das ein oder andere Alien abschiessen kann. Vielmehr soll der Random Agent eine Grundlage geben, was man durch zufälliges Drücken von Tasten eerreichne kann um in den nächsten Experimenten einen Verlgeich zu haben.
-![](assets/Pasted image 20241222150011.png]
+![](./assets/Pasted image 20241222150011.png]
 Der Random Agent hat einen durchschnittlichen Return von 136.8 erreicht, wobei es einige Ausreisser nach oben gibt wie in der Abbbildung gut zu sehen ist.. Das erklärt auch der ein bisschen tiefere Median. 
 
 Beim Ansehen der Videos wird gut ersichttlich, dass es sich hier um zufällige Actioons handelt. Das Spaceship bewegt sich schnell hin und her und legt keine längeren Strecken an einem St¨ück in eine bestimmte Richtung zurück.
@@ -61,7 +61,7 @@ Der Actor und Critic haben jeweils einen separaten Head bestehend aus einem line
 Dieses Modell wird für jeden Agent verwendet, ausser im Baseline-Setup und im ResNet18-Setup.
 ### Vergleich mit Baseline
 Die folgende Grafik zeigt die Verteilung der Returns von 100 Episoden in der Evaluationen dar (y-Achse). Zusehen ist hier ein Violinplot mit zwei Verteilungen. Eine des Baseline Ansatzes mit einem Random Agent und eine für den initialen Ansatz (PPO). In Rot ist jeweils der Median eingezeichnet und in Blau das 10te und 90ste Percentil. Alle ähnlichen Grafik sind gleich aufgebaut. Sie unterscheiden sich lediglich darin, welche Konfiguration(en) abgebildet ist/sind auf der x-Achse und ob die Verteilung der Returns der Episoden oder die Verteilungen der Dauer pro Epsiode oder Länge pro Episode dargestellt wird.
-![](assets/Pasted image 20241230161019.png]
+![](/assets/Pasted image 20241230161019.png]
 Wie auf ddem Plot zu sehen ist, ist der Median der Runs des initialen Ansatzes deutlich über dem 90% Percentil des Baseline (Random Agent). Es ist also klar zu sehen, dass der Agent mit PPO gelernt hat.
 
 
