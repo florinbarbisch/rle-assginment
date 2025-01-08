@@ -61,7 +61,7 @@ Der Actor und Critic haben jeweils einen separaten Head bestehend aus einem line
 Dieses Modell wird für jeden Agent verwendet, ausser im Baseline-Setup und im ResNet18-Setup.
 ### Vergleich mit Baseline
 Die folgende Grafik zeigt die Verteilung der Returns von 100 Episoden in der Evaluationen dar (y-Achse). Zusehen ist hier ein Violinplot mit zwei Verteilungen. Eine des Baseline Ansatzes mit einem Random Agent und eine für den initialen Ansatz (PPO). In Rot ist jeweils der Median eingezeichnet und in Blau das 10te und 90ste Percentil. Alle ähnlichen Grafik sind gleich aufgebaut. Sie unterscheiden sich lediglich darin, welche Konfiguration(en) abgebildet ist/sind auf der x-Achse und ob die Verteilung der Returns der Episoden oder die Verteilungen der Dauer pro Epsiode oder Länge pro Episode dargestellt wird.
-![](/assets/Pasted image 20241230161019.png)
+![plot](/assets/Pasted image 20241230161019.png)
 Wie auf ddem Plot zu sehen ist, ist der Median der Runs des initialen Ansatzes deutlich über dem 90% Percentil des Baseline (Random Agent). Es ist also klar zu sehen, dass der Agent mit PPO gelernt hat.
 
 
