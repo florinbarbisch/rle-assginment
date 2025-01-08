@@ -1,0 +1,2 @@
+/var/lib/slurm/slurmd/job59659/slurm_script: 8: .venv/bin/activate: Permission denied
+/var/lib/slurm/slurmd/job59659/slurm_script: 9: python: not found

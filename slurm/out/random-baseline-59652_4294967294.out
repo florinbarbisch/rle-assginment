@@ -1,0 +1,2 @@
+/var/lib/slurm/slurmd/job59652/slurm_script: 8: .venv/bin/activate: not found
+/var/lib/slurm/slurmd/job59652/slurm_script: 9: python: not found

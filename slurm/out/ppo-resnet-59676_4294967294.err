@@ -1,0 +1,72 @@
+/mnt/nas05/clusterdata01/home2/f.barbisch/rle-assginment/.venv/lib/python3.12/site-packages/tyro/_parsers.py:344: UserWarning: The field `wandb-entity` is annotated with type `<class 'str'>`, but the default value `None` has type `<class 'NoneType'>`. We'll try to handle this gracefully, but it may cause unexpected behavior.
+  warnings.warn(message)
+/mnt/nas05/clusterdata01/home2/f.barbisch/rle-assginment/.venv/lib/python3.12/site-packages/tyro/_parsers.py:344: UserWarning: The field `eval-checkpoint` is annotated with type `<class 'str'>`, but the default value `None` has type `<class 'NoneType'>`. We'll try to handle this gracefully, but it may cause unexpected behavior.
+  warnings.warn(message)
+/mnt/nas05/clusterdata01/home2/f.barbisch/rle-assginment/.venv/lib/python3.12/site-packages/tyro/_parsers.py:344: UserWarning: The field `target-kl` is annotated with type `<class 'float'>`, but the default value `None` has type `<class 'NoneType'>`. We'll try to handle this gracefully, but it may cause unexpected behavior.
+  warnings.warn(message)
+wandb: Using wandb-core as the SDK backend.  Please refer to https://wandb.me/wandb-core for more information.
+wandb: Currently logged in as: florin-barbisch. Use `wandb login --relogin` to force relogin
+wandb: Tracking run with wandb version 0.19.1
+wandb: Run data is saved locally in /mnt/nas05/clusterdata01/home2/f.barbisch/rle-assginment/wandb/run-20241223_000812-w3ai6tcx
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run ALE/SpaceInvaders-v5__ppo_resnet__1__20241223_000809
+wandb: ⭐️ View project at https://wandb.ai/florin-barbisch/cleanRL
+wandb: 🚀 View run at https://wandb.ai/florin-barbisch/cleanRL/runs/w3ai6tcx
+A.L.E: Arcade Learning Environment (version 0.10.1+unknown)
+[Powered by Stella]
+Traceback (most recent call last):
+  File "/mnt/nas05/clusterdata01/home2/f.barbisch/rle-assginment/ppo_resnet.py", line 362, in <module>
+    episodic_events = evaluate(
+                      ^^^^^^^^^
+  File "/mnt/nas05/clusterdata01/home2/f.barbisch/rle-assginment/rle_assignment/ppo_eval.py", line 22, in evaluate
+    agent = Model(envs).to(device)
+            ^^^^^^^^^^^
+TypeError: Agent.__init__() missing 1 required positional argument: 'pretrained_weights'
+Exception ignored in: <function VectorEnv.__del__ at 0x7a6af35e91c0>
+Traceback (most recent call last):
+  File "/mnt/nas05/clusterdata01/home2/f.barbisch/rle-assginment/.venv/lib/python3.12/site-packages/gymnasium/vector/vector_env.py", line 324, in __del__
+  File "/mnt/nas05/clusterdata01/home2/f.barbisch/rle-assginment/.venv/lib/python3.12/site-packages/gymnasium/vector/vector_env.py", line 222, in close
+  File "/mnt/nas05/clusterdata01/home2/f.barbisch/rle-assginment/.venv/lib/python3.12/site-packages/gymnasium/vector/sync_vector_env.py", line 305, in close_extras
+  File "/mnt/nas05/clusterdata01/home2/f.barbisch/rle-assginment/.venv/lib/python3.12/site-packages/gymnasium/core.py", line 336, in close
+  File "/mnt/nas05/clusterdata01/home2/f.barbisch/rle-assginment/.venv/lib/python3.12/site-packages/gymnasium/core.py", line 336, in close
+  File "/mnt/nas05/clusterdata01/home2/f.barbisch/rle-assginment/.venv/lib/python3.12/site-packages/gymnasium/core.py", line 336, in close
+  [Previous line repeated 6 more times]
+  File "/mnt/nas05/clusterdata01/home2/f.barbisch/rle-assginment/.venv/lib/python3.12/site-packages/wandb/integration/gym/__init__.py", line 75, in close
+AttributeError: 'RecordVideo' object has no attribute 'enabled'
+/mnt/nas05/clusterdata01/home2/f.barbisch/rle-assginment/.venv/lib/python3.12/site-packages/tyro/_parsers.py:344: UserWarning: The field `wandb-entity` is annotated with type `<class 'str'>`, but the default value `None` has type `<class 'NoneType'>`. We'll try to handle this gracefully, but it may cause unexpected behavior.
+  warnings.warn(message)
+/mnt/nas05/clusterdata01/home2/f.barbisch/rle-assginment/.venv/lib/python3.12/site-packages/tyro/_parsers.py:344: UserWarning: The field `eval-checkpoint` is annotated with type `<class 'str'>`, but the default value `None` has type `<class 'NoneType'>`. We'll try to handle this gracefully, but it may cause unexpected behavior.
+  warnings.warn(message)
+/mnt/nas05/clusterdata01/home2/f.barbisch/rle-assginment/.venv/lib/python3.12/site-packages/tyro/_parsers.py:344: UserWarning: The field `target-kl` is annotated with type `<class 'float'>`, but the default value `None` has type `<class 'NoneType'>`. We'll try to handle this gracefully, but it may cause unexpected behavior.
+  warnings.warn(message)
+wandb: Using wandb-core as the SDK backend.  Please refer to https://wandb.me/wandb-core for more information.
+wandb: Currently logged in as: florin-barbisch. Use `wandb login --relogin` to force relogin
+wandb: Tracking run with wandb version 0.19.1
+wandb: Run data is saved locally in /mnt/nas05/clusterdata01/home2/f.barbisch/rle-assginment/wandb/run-20241223_005320-bqqz1rh7
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run ALE/SpaceInvaders-v5__ppo_resnet_pretrained__1__20241223_005316
+wandb: ⭐️ View project at https://wandb.ai/florin-barbisch/cleanRL
+wandb: 🚀 View run at https://wandb.ai/florin-barbisch/cleanRL/runs/bqqz1rh7
+A.L.E: Arcade Learning Environment (version 0.10.1+unknown)
+[Powered by Stella]
+Downloading: "https://download.pytorch.org/models/resnet18-f37072fd.pth" to /home2/f.barbisch/.cache/torch/hub/checkpoints/resnet18-f37072fd.pth
+  0%|          | 0.00/44.7M [00:00<?, ?B/s] 62%|██████▏   | 27.5M/44.7M [00:00<00:00, 288MB/s]100%|██████████| 44.7M/44.7M [00:00<00:00, 315MB/s]
+Traceback (most recent call last):
+  File "/mnt/nas05/clusterdata01/home2/f.barbisch/rle-assginment/ppo_resnet.py", line 362, in <module>
+    episodic_events = evaluate(
+                      ^^^^^^^^^
+  File "/mnt/nas05/clusterdata01/home2/f.barbisch/rle-assginment/rle_assignment/ppo_eval.py", line 22, in evaluate
+    agent = Model(envs).to(device)
+            ^^^^^^^^^^^
+TypeError: Agent.__init__() missing 1 required positional argument: 'pretrained_weights'
+Exception ignored in: <function VectorEnv.__del__ at 0x74d4c93e91c0>
+Traceback (most recent call last):
+  File "/mnt/nas05/clusterdata01/home2/f.barbisch/rle-assginment/.venv/lib/python3.12/site-packages/gymnasium/vector/vector_env.py", line 324, in __del__
+  File "/mnt/nas05/clusterdata01/home2/f.barbisch/rle-assginment/.venv/lib/python3.12/site-packages/gymnasium/vector/vector_env.py", line 222, in close
+  File "/mnt/nas05/clusterdata01/home2/f.barbisch/rle-assginment/.venv/lib/python3.12/site-packages/gymnasium/vector/sync_vector_env.py", line 305, in close_extras
+  File "/mnt/nas05/clusterdata01/home2/f.barbisch/rle-assginment/.venv/lib/python3.12/site-packages/gymnasium/core.py", line 336, in close
+  File "/mnt/nas05/clusterdata01/home2/f.barbisch/rle-assginment/.venv/lib/python3.12/site-packages/gymnasium/core.py", line 336, in close
+  File "/mnt/nas05/clusterdata01/home2/f.barbisch/rle-assginment/.venv/lib/python3.12/site-packages/gymnasium/core.py", line 336, in close
+  [Previous line repeated 6 more times]
+  File "/mnt/nas05/clusterdata01/home2/f.barbisch/rle-assginment/.venv/lib/python3.12/site-packages/wandb/integration/gym/__init__.py", line 75, in close
+AttributeError: 'RecordVideo' object has no attribute 'enabled'

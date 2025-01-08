@@ -1,0 +1,17 @@
+/mnt/nas05/clusterdata01/home2/f.barbisch/rle-assginment/.venv/lib/python3.12/site-packages/tyro/_parsers.py:344: UserWarning: The field `wandb-entity` is annotated with type `<class 'str'>`, but the default value `None` has type `<class 'NoneType'>`. We'll try to handle this gracefully, but it may cause unexpected behavior.
+  warnings.warn(message)
+/mnt/nas05/clusterdata01/home2/f.barbisch/rle-assginment/.venv/lib/python3.12/site-packages/tyro/_parsers.py:344: UserWarning: The field `eval-checkpoint` is annotated with type `<class 'str'>`, but the default value `None` has type `<class 'NoneType'>`. We'll try to handle this gracefully, but it may cause unexpected behavior.
+  warnings.warn(message)
+/mnt/nas05/clusterdata01/home2/f.barbisch/rle-assginment/.venv/lib/python3.12/site-packages/tyro/_parsers.py:344: UserWarning: The field `target-kl` is annotated with type `<class 'float'>`, but the default value `None` has type `<class 'NoneType'>`. We'll try to handle this gracefully, but it may cause unexpected behavior.
+  warnings.warn(message)
+wandb: Using wandb-core as the SDK backend.  Please refer to https://wandb.me/wandb-core for more information.
+wandb: Currently logged in as: florin-barbisch. Use `wandb login --relogin` to force relogin
+wandb: Tracking run with wandb version 0.19.1
+wandb: Run data is saved locally in /mnt/nas05/clusterdata01/home2/f.barbisch/rle-assginment/wandb/run-20241222_223122-8klnvvua
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run ALE/SpaceInvaders-v5__initial_run__1__20241222_223117
+wandb: ⭐️ View project at https://wandb.ai/florin-barbisch/cleanRL
+wandb: 🚀 View run at https://wandb.ai/florin-barbisch/cleanRL/runs/8klnvvua
+A.L.E: Arcade Learning Environment (version 0.10.1+unknown)
+[Powered by Stella]
+slurmstepd-server0103: error: *** JOB 59672 ON server0103 CANCELLED AT 2024-12-22T22:31:54 ***

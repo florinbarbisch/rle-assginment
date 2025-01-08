@@ -5,11 +5,11 @@ __pycache__/
 
 # C extensions
 *.so
-runs/
-videos/
+/runs/
+/videos/
 wandb/
-out/
-slurm/
+/out/
+#slurm/
 # Distribution / packaging
 .Python
 build/

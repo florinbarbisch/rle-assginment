@@ -1,0 +1,39 @@
+/mnt/nas05/clusterdata01/home2/f.barbisch/rle-assginment/.venv/lib/python3.12/site-packages/tyro/_parsers.py:344: UserWarning: The field `wandb-entity` is annotated with type `<class 'str'>`, but the default value `None` has type `<class 'NoneType'>`. We'll try to handle this gracefully, but it may cause unexpected behavior.
+  warnings.warn(message)
+/mnt/nas05/clusterdata01/home2/f.barbisch/rle-assginment/.venv/lib/python3.12/site-packages/tyro/_parsers.py:344: UserWarning: The field `eval-checkpoint` is annotated with type `<class 'str'>`, but the default value `None` has type `<class 'NoneType'>`. We'll try to handle this gracefully, but it may cause unexpected behavior.
+  warnings.warn(message)
+/mnt/nas05/clusterdata01/home2/f.barbisch/rle-assginment/.venv/lib/python3.12/site-packages/tyro/_parsers.py:344: UserWarning: The field `target-kl` is annotated with type `<class 'float'>`, but the default value `None` has type `<class 'NoneType'>`. We'll try to handle this gracefully, but it may cause unexpected behavior.
+  warnings.warn(message)
+wandb: Using wandb-core as the SDK backend.  Please refer to https://wandb.me/wandb-core for more information.
+wandb: Currently logged in as: florin-barbisch. Use `wandb login --relogin` to force relogin
+wandb: Tracking run with wandb version 0.19.1
+wandb: Run data is saved locally in /mnt/nas05/clusterdata01/home2/f.barbisch/rle-assginment/wandb/run-20241225_184124-md8pfc4d
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run ALE/SpaceInvaders-v5__iem_ppo__1__20241225_184110
+wandb: ⭐️ View project at https://wandb.ai/florin-barbisch/cleanRL
+wandb: 🚀 View run at https://wandb.ai/florin-barbisch/cleanRL/runs/md8pfc4d
+A.L.E: Arcade Learning Environment (version 0.10.1+unknown)
+[Powered by Stella]
+Exception ignored in: <function VectorEnv.__del__ at 0x7a733b1f51c0>
+Traceback (most recent call last):
+  File "/mnt/nas05/clusterdata01/home2/f.barbisch/rle-assginment/.venv/lib/python3.12/site-packages/gymnasium/vector/vector_env.py", line 324, in __del__
+    self.close()
+  File "/mnt/nas05/clusterdata01/home2/f.barbisch/rle-assginment/.venv/lib/python3.12/site-packages/gymnasium/vector/vector_env.py", line 222, in close
+    self.close_extras(**kwargs)
+  File "/mnt/nas05/clusterdata01/home2/f.barbisch/rle-assginment/.venv/lib/python3.12/site-packages/gymnasium/vector/sync_vector_env.py", line 305, in close_extras
+    [env.close() for env in self.envs]
+     ^^^^^^^^^^^
+  File "/mnt/nas05/clusterdata01/home2/f.barbisch/rle-assginment/.venv/lib/python3.12/site-packages/gymnasium/core.py", line 336, in close
+    return self.env.close()
+           ^^^^^^^^^^^^^^^^
+  File "/mnt/nas05/clusterdata01/home2/f.barbisch/rle-assginment/.venv/lib/python3.12/site-packages/gymnasium/core.py", line 336, in close
+    return self.env.close()
+           ^^^^^^^^^^^^^^^^
+  File "/mnt/nas05/clusterdata01/home2/f.barbisch/rle-assginment/.venv/lib/python3.12/site-packages/gymnasium/core.py", line 336, in close
+    return self.env.close()
+           ^^^^^^^^^^^^^^^^
+  [Previous line repeated 6 more times]
+  File "/mnt/nas05/clusterdata01/home2/f.barbisch/rle-assginment/.venv/lib/python3.12/site-packages/wandb/integration/gym/__init__.py", line 75, in close
+    if not self.enabled:
+           ^^^^^^^^^^^^
+AttributeError: 'RecordVideo' object has no attribute 'enabled'
